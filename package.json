@@ -35,12 +35,14 @@
     "@hapi/joi": "^15.1.0"
   },
   "devDependencies": {
+    "@hapi/hapi": "^18.3.1",
     "@hydrant/eslint-config": "^2.1.0",
+    "@scoop/cli-utils": "0.0.9",
     "ava": "^2.1.0",
     "eslint": "^6.0.1",
     "eslint-plugin-ava": "^7.1.0",
-    "@hapi/hapi": "^18.3.1",
     "lint-staged": "^8.2.1",
+    "mocha-circleci-reporter": "0.0.3",
     "p-defer": "^3.0.0"
   }
 }

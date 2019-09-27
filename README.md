@@ -1,5 +1,7 @@
 # hapi-sentry
 
+**Maintainer(s)**: [@eladidan](https://github.com/eladidan)
+
 [![package on npm](https://img.shields.io/npm/v/hapi-sentry.svg)](https://www.npmjs.com/package/hapi-sentry)
 [![Travis branch](https://travis-ci.com/hydra-newmedia/hapi-sentry.svg?branch=master)](https://travis-ci.com/hydra-newmedia/hapi-sentry)
 ![node 8+ required](https://img.shields.io/badge/node-8%2B-brightgreen.svg)

@@ -1,0 +1,62 @@
+defaults: &build_test_steps
+  steps:
+    - setup_remote_docker
+    - checkout
+    - run: /log-in-npm
+    - run: npm install
+    - run:
+        name: Create results directories
+        command: mkdir -p ./results/eslint ./results/mocha
+    - run:
+        name: Run ESLint
+        command: npm run --silent lint -- -f junit > ./results/eslint/junit.xml
+    - run:
+        name: Run tests
+        command: npm test -- --reporter mocha-circleci-reporter --reporter-options mochaFile=./results/mocha/junit.xml
+    - store_test_results:
+        path: ./results
+
+version: 2
+jobs:
+  build_test_node_10:
+    docker:
+      - image: $DOCKER_REGISTRY_URL/circleci-node-10:3
+        auth:
+          username: $DOCKER_REGISTRY_USERNAME
+          password: $DOCKER_REGISTRY_PASSWORD
+    <<: *build_test_steps
+  build_test_node_8:
+    docker:
+      - image: $DOCKER_REGISTRY_URL/circleci-node-8:3
+        auth:
+          username: $DOCKER_REGISTRY_USERNAME
+          password: $DOCKER_REGISTRY_PASSWORD
+    <<: *build_test_steps
+  publish:
+    docker:
+      - image: $DOCKER_REGISTRY_URL/circleci-node-10:3
+        auth:
+          username: $DOCKER_REGISTRY_USERNAME
+          password: $DOCKER_REGISTRY_PASSWORD
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: /log-in-npm
+      - run: npm install
+      - run: $(npm bin)/publish2npm
+workflows:
+  version: 2
+  test_and_publish:
+    jobs:
+      - build_test_node_10:
+          context: build
+      - build_test_node_8:
+          context: build
+      - publish:
+          requires:
+            - build_test_node_10
+            - build_test_node_8
+          context: publish
+          filters:
+            branches:
+              only: master
