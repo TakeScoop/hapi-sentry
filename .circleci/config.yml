@@ -7,7 +7,6 @@ defaults: &build_test_steps
     - run:
         name: Create results directories
         command: mkdir -p ./results/eslint ./results/mocha
-    - run: ./test/scripts/createFakeAWSConfig.sh
     - run:
         name: Run ESLint
         command: npm run --silent lint -- -f junit > ./results/eslint/junit.xml
